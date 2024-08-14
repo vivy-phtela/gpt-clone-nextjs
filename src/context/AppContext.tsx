@@ -9,6 +9,7 @@ import React, {
   useState,
 } from "react";
 import { auth } from "../../firebase";
+import { useRouter } from "next/navigation";
 
 type AppProviderProps = {
   children: ReactNode;
@@ -20,6 +21,8 @@ type AppContextType = {
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   selectedRoom: string | null;
   setSelectedRoom: React.Dispatch<React.SetStateAction<string | null>>;
+  selectRoomName: string | null;
+  setSelectRoomName: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 const defaultContextData = {
@@ -28,6 +31,8 @@ const defaultContextData = {
   setUser: () => {},
   selectedRoom: null,
   setSelectedRoom: () => {},
+  selectRoomName: null,
+  setSelectRoomName: () => {},
 };
 
 const AppContext = createContext<AppContextType>(defaultContextData);
@@ -36,11 +41,17 @@ export function AppProvider({ children }: AppProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [userid, setUserId] = useState<string | null>(null);
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
+  const [selectRoomName, setSelectRoomName] = useState<string | null>(null);
+
+  const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (NewUser) => {
-      setUser(NewUser);
-      setUserId(NewUser ? NewUser.uid : null);
+    const unsubscribe = onAuthStateChanged(auth, (newUser) => {
+      setUser(newUser);
+      setUserId(newUser ? newUser.uid : null);
+      if (!newUser) {
+        router.push("/auth/login");
+      }
     });
     return () => {
       unsubscribe();
@@ -55,6 +66,8 @@ export function AppProvider({ children }: AppProviderProps) {
         setUser,
         selectedRoom,
         setSelectedRoom,
+        selectRoomName,
+        setSelectRoomName,
       }}
     >
       {children}

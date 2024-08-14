@@ -1,4 +1,5 @@
-import Image from "next/image";
+"use client";
+
 import Chat from "./components/Chat";
 import Sidebar from "./components/Sidebar";
 

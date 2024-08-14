@@ -1,16 +1,18 @@
 "use client";
 
 import {
+  addDoc,
   collection,
   onSnapshot,
   orderBy,
   query,
+  serverTimestamp,
   Timestamp,
   where,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { MdOutlineLogout } from "react-icons/md";
-import { db } from "../../../firebase";
+import { auth, db } from "../../../firebase";
 import { useAppContext } from "@/context/AppContext";
 
 type Room = {
@@ -20,7 +22,7 @@ type Room = {
 };
 
 const Sidebar = () => {
-  const { user, userid, setSelectedRoom } = useAppContext();
+  const { user, userid, setSelectedRoom, setSelectRoomName } = useAppContext();
 
   const [rooms, setRooms] = useState<Room[]>([]);
 
@@ -49,14 +51,34 @@ const Sidebar = () => {
     }
   }, [userid]);
 
-  const selectRoom = (roomId: string) => {
+  const selectRoom = (roomId: string, roomName: string) => {
     setSelectedRoom(roomId);
+    setSelectRoomName(roomName);
+  };
+
+  const addNewRoom = async () => {
+    const roomName = prompt("部屋名を入力");
+    if (roomName) {
+      const newRoomRef = collection(db, "rooms");
+      await addDoc(newRoomRef, {
+        name: roomName,
+        userid: userid,
+        createdat: serverTimestamp(),
+      });
+    }
+  };
+
+  const handleLogout = () => {
+    auth.signOut();
   };
 
   return (
     <div className="bg-blue-700 h-full overflow-y-auto px-5 flex flex-col">
       <div className="flex-grow">
-        <div className="cursor-pointer flex justify-evenly items-center border mt-2 rounded-md hover:bg-blue-500 duration-150">
+        <div
+          onClick={addNewRoom}
+          className="cursor-pointer flex justify-evenly items-center border mt-2 rounded-md hover:bg-blue-500 duration-150"
+        >
           <span className="text-white p-4 text-2xl">＋</span>
           <h1 className="text-white text-xl font-semibold p-4">New Chat</h1>
         </div>
@@ -65,14 +87,23 @@ const Sidebar = () => {
             <li
               key={room.id}
               className="cursor-pointer border-b p-4 text-slate-100 hover:bg-blue-500 duration-150"
-              onClick={() => selectRoom(room.id)}
+              onClick={() => selectRoom(room.id, room.name)}
             >
               {room.name}
             </li>
           ))}
         </ul>
       </div>
-      <div className="flex items-center justify-evenly text-lg mb-2 cursor-pointer p-4 text-slate-100 hover:bg-slate-700 duration-150">
+      {user && (
+        // ログインしている場合はログインユーザのemailを表示
+        <div className="mb-2 text-slate-100 text-lg font-medium ">
+          {user.email}
+        </div>
+      )}
+      <div
+        onClick={handleLogout}
+        className="flex items-center justify-evenly text-lg mb-2 cursor-pointer p-4 text-slate-100 hover:bg-slate-700 duration-150"
+      >
         <MdOutlineLogout />
         <span>ログアウト</span>
       </div>
