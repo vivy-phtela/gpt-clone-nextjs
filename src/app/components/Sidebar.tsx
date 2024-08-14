@@ -81,6 +81,8 @@ const Sidebar = () => {
     if (confirmDelete) {
       const roomDocRef = doc(db, "rooms", roomId);
       await deleteDoc(roomDocRef);
+      setSelectedRoom(null);
+      setSelectRoomName(null);
     }
   };
 
