@@ -96,7 +96,7 @@ const Sidebar = () => {
       </div>
       {user && (
         // ログインしている場合はログインユーザのemailを表示
-        <div className="mb-2 text-slate-100 text-lg font-medium ">
+        <div className="mb-2 text-black text-lg font-medium flex justify-center">
           {user.email}
         </div>
       )}
