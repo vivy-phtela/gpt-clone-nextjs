@@ -70,6 +70,7 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     auth.signOut();
+    setSelectedRoom(null); // ログアウト時に選択しているルームを初期化
   };
 
   return (
