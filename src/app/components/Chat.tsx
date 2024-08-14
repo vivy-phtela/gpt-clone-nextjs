@@ -124,6 +124,7 @@ const Chat = () => {
             </div>
           </div>
         ))}
+        {/* ローディングの場合はローディングアイコンを表示 */}
         {isLoading && <LoadingIcons.SpinningCircles />}
       </div>
 
@@ -136,7 +137,7 @@ const Chat = () => {
           value={inputMessage}
           onKeyDown={(e) => {
             // エンターキーでメッセージを送信
-            if (e.key === "Enter") {
+            if (e.key === "Enter" && e.shiftKey) {
               sendMessage();
             }
           }}
