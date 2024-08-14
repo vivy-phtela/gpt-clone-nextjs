@@ -3,6 +3,8 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   onSnapshot,
   orderBy,
   query,
@@ -11,7 +13,7 @@ import {
   where,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { MdOutlineLogout } from "react-icons/md";
+import { MdOutlineLogout, MdDelete } from "react-icons/md";
 import { auth, db } from "../../../firebase";
 import { useAppContext } from "@/context/AppContext";
 
@@ -69,8 +71,17 @@ const Sidebar = () => {
   };
 
   const handleLogout = () => {
-    auth.signOut();
+    auth.signOut(); // ログアウト
     setSelectedRoom(null); // ログアウト時に選択しているルームを初期化
+  };
+
+  // ルームの削除
+  const deleteRoom = async (roomId: string) => {
+    const confirmDelete = confirm("このルームを削除しますか？");
+    if (confirmDelete) {
+      const roomDocRef = doc(db, "rooms", roomId);
+      await deleteDoc(roomDocRef);
+    }
   };
 
   return (
@@ -87,16 +98,21 @@ const Sidebar = () => {
           {rooms.map((room) => (
             <li
               key={room.id}
-              className="cursor-pointer border-b p-4 text-slate-100 hover:bg-blue-500 duration-150"
-              onClick={() => selectRoom(room.id, room.name)}
+              className="flex justify-between items-center cursor-pointer border-b p-4 text-slate-100 hover:bg-blue-500 duration-150"
             >
-              {room.name}
+              <span onClick={() => selectRoom(room.id, room.name)}>
+                {room.name}
+              </span>
+              <MdDelete
+                // ルーム削除のアイコン
+                onClick={() => deleteRoom(room.id)}
+                className="text-red-400 hover:text-red-600 duration-150 cursor-pointer size-5"
+              />
             </li>
           ))}
         </ul>
       </div>
       {user && (
-        // ログインしている場合はログインユーザのemailを表示
         <div className="mb-2 text-black text-lg font-medium flex justify-center">
           {user.email}
         </div>
