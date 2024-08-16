@@ -36,7 +36,7 @@ const Login = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center">
+    <div className="h-screen flex flex-col items-center justify-center bg-zinc-800">
       <form
         onSubmit={handleSubmit(onsubmit)}
         className="bg-white p-8 rounded-lg shadow-lg w-96"
@@ -82,7 +82,7 @@ const Login = () => {
         <div className="flex justify-end">
           <button
             type="submit"
-            className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700"
+            className="bg-zinc-900 text-white font-bold py-2 px-4 rounded hover:bg-zinc-700"
           >
             ログイン
           </button>

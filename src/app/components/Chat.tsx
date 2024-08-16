@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { FaPaperPlane } from "react-icons/fa";
+import { HiArrowCircleUp } from "react-icons/hi";
+import { AiFillCodepenCircle } from "react-icons/ai";
 import { db } from "../../../firebase";
 import {
   addDoc,
@@ -103,7 +104,7 @@ const Chat = () => {
   };
 
   return (
-    <div className="bg-gray-500 h-full p-4 flex flex-col">
+    <div className="bg-zinc-800 h-full p-4 flex flex-col">
       <h1 className="text-2xl text-white font-semibold mb-4">
         {selectRoomName}
       </h1>
@@ -116,11 +117,16 @@ const Chat = () => {
             <div
               className={
                 message.sender === "user"
-                  ? "bg-green-500 inline-block rounded px-4 py-2 mb-2"
-                  : "bg-blue-500 inline-block rounded px-4 py-2 mb-2"
+                  ? "bg-neutral-700 inline-block rounded px-4 py-2 mb-6 mr-4"
+                  : "inline-block rounded px-4 py-2 mb-6"
               }
             >
-              <p className="text-white">{message.text}</p>
+              <div className="flex items-center">
+                {message.sender !== "user" && (
+                  <AiFillCodepenCircle className="mr-4 flex-shrink-0 size-8 text-white" />
+                )}
+                <p className="text-white">{message.text}</p>
+              </div>
             </div>
           </div>
         ))}
@@ -128,25 +134,25 @@ const Chat = () => {
         {isLoading && <LoadingIcons.SpinningCircles />}
       </div>
 
-      <div className="flex-shrink-0 relative">
+      <div className="flex justify-center items-center relative">
         <input
           type="text"
           placeholder="Send a Message"
-          className="boder-2 rounded w-full pr-10 focus:outline-none p-2"
+          className="rounded-2xl w-5/6 focus:outline-none p-3 bg-neutral-700 text-white"
           onChange={(e) => setInputMessage(e.target.value)}
           value={inputMessage}
           onKeyDown={(e) => {
-            // エンターキーでメッセージを送信
+            // エンターキーとShiftキーでメッセージを送信
             if (e.key === "Enter" && e.shiftKey) {
               sendMessage();
             }
           }}
         />
         <button
-          className="absolute inset-y-0 right-4 flex items-center"
+          className="absolute inset-y-0 right-28 flex items-center"
           onClick={() => sendMessage()}
         >
-          <FaPaperPlane />
+          <HiArrowCircleUp className="text-zinc-400 hover:text-zinc-50 duration-150 cursor-pointer size-9" />
         </button>
       </div>
     </div>

@@ -87,43 +87,43 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-blue-700 h-full overflow-y-auto px-5 flex flex-col">
+    <div className="bg-zinc-900 h-full overflow-y-auto px-5 flex flex-col">
       <div className="flex-grow">
         <div
           onClick={addNewRoom}
-          className="cursor-pointer flex justify-evenly items-center border mt-2 rounded-md hover:bg-blue-500 duration-150"
+          className="cursor-pointer flex justify-evenly items-center border mt-2 rounded-md hover:bg-zinc-800 duration-150"
         >
-          <span className="text-white p-4 text-2xl">＋</span>
-          <h1 className="text-white text-xl font-semibold p-4">New Chat</h1>
+          <span className="text-white p-2 text-2xl">＋</span>
+          <h1 className="text-white text-xl font-semibold p-3">New Chat</h1>
         </div>
         <ul>
           {rooms.map((room) => (
             <li
               key={room.id}
-              className="flex justify-between items-center cursor-pointer border-b p-4 text-slate-100 hover:bg-blue-500 duration-150"
+              className="flex justify-between items-center cursor-pointer p-4 text-slate-100 hover:bg-zinc-800 duration-150"
+              onClick={() => selectRoom(room.id, room.name)}
             >
-              <span onClick={() => selectRoom(room.id, room.name)}>
-                {room.name}
-              </span>
+              <span>{room.name}</span>
               <MdDelete
                 // ルーム削除のアイコン
                 onClick={() => deleteRoom(room.id)}
-                className="text-red-400 hover:text-red-600 duration-150 cursor-pointer size-5"
+                className="text-red-400 hover:text-red-600 duration-150 cursor-pointer size-4"
               />
             </li>
           ))}
         </ul>
       </div>
       {user && (
-        <div className="mb-2 text-black text-lg font-medium flex justify-center">
+        // ログインしている場合はユーザー情報を表示
+        <div className="mb-2 text-white text-lg font-medium flex justify-center">
           {user.email}
         </div>
       )}
       <div
         onClick={handleLogout}
-        className="flex items-center justify-evenly text-lg mb-2 cursor-pointer p-4 text-slate-100 hover:bg-slate-700 duration-150"
+        className="flex items-center justify-evenly text-lg mb-2 cursor-pointer p-4 text-slate-100 hover:bg-zinc-800 duration-150"
       >
-        <MdOutlineLogout />
+        <MdOutlineLogout className="size-7" />
         <span>ログアウト</span>
       </div>
     </div>
