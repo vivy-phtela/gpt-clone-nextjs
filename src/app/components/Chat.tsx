@@ -109,29 +109,35 @@ const Chat = () => {
         {selectRoomName}
       </h1>
       <div className="flex-grow overflow-y-auto mb-4" ref={scrollDiv}>
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={message.sender === "user" ? "text-right" : "text-left"}
-          >
-            <div
-              className={
-                message.sender === "user"
-                  ? "bg-neutral-700 inline-block rounded px-4 py-2 mb-6 mr-4"
-                  : "inline-block rounded px-4 py-2 mb-6"
-              }
-            >
-              <div className="flex items-center">
-                {message.sender !== "user" && (
-                  <AiFillCodepenCircle className="mr-4 flex-shrink-0 size-8 text-white" />
-                )}
-                <p className="text-white">{message.text}</p>
+        {selectRoomName !== null && (
+          <>
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={
+                  message.sender === "user" ? "text-right" : "text-left"
+                }
+              >
+                <div
+                  className={
+                    message.sender === "user"
+                      ? "bg-neutral-700 inline-block rounded px-4 py-2 mb-6 mr-4"
+                      : "inline-block rounded px-4 py-2 mb-6"
+                  }
+                >
+                  <div className="flex items-center">
+                    {message.sender !== "user" && (
+                      <AiFillCodepenCircle className="mr-4 flex-shrink-0 size-8 text-white" />
+                    )}
+                    <p className="text-white">{message.text}</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
-        {/* ローディングの場合はローディングアイコンを表示 */}
-        {isLoading && <LoadingIcons.SpinningCircles />}
+            ))}
+            {/* ローディングの場合はローディングアイコンを表示 */}
+            {isLoading && <LoadingIcons.SpinningCircles />}
+          </>
+        )}
       </div>
 
       <div className="flex justify-center items-center relative">
